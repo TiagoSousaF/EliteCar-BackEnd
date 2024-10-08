@@ -33,11 +33,11 @@ INSERT INTO carro (marca, modelo, ano, cor) VALUES
     ('Volkswagen', 'Golf', 2022, 'Azul');
 
 INSERT INTO cliente (nome, cpf, telefone) VALUES
-    ('João Silva', '12345678901', '(11) 91234-5678'),
-    ('Maria Oliveira', '23456789012', '(21) 99876-5432'),
-    ('Carlos Souza', '34567890123', '(31) 98765-4321'),
-    ('Ana Costa', '45678901234', '(41) 97654-3210'),
-    ('Paulo Mendes', '56789012345', '(51) 96543-2109');
+    ('João Silva', '12345678901', '11 912345678'),
+    ('Maria Oliveira', '23456789012', '21 998765432'),
+    ('Carlos Souza', '34567890123', '31 987654321'),
+    ('Ana Costa', '45678901234', '41 976543210'),
+    ('Paulo Mendes', '56789012345', '51 965432109');
 
 INSERT INTO pedido_venda (id_cliente, id_carro, data_pedido, valor_pedido) VALUES
     (1, 2, '2023-09-15', 55000.00),

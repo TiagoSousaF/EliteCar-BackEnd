@@ -92,11 +92,12 @@ export class Cliente {
         return this.telefone;
     }
 
-/**
-     * Define o telefone do cliente.
-     * 
-     * @param telefone - O telefone do cliente.
-     */
+    /**
+         * Define o telefone do cliente.
+         * 
+         * @param telefone - O telefone do cliente.
+         */
     public setTelefone(telefone: string): void {
-        this.telefone = telefone};
+        this.telefone = telefone;
+    }
 }
