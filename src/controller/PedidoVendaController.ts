@@ -53,7 +53,7 @@ class PedidoVendaController extends PedidoVenda {
                                     pedidoRecebido.valorPedido);
 
         // Chama a função de cadastro passando o objeto como parâmetro
-        const repostaClasse = await PedidoVenda.cadastroPedidoVenda(novoPedido);
+        const repostaClasse = await PedidoVenda.cadastroPedido(novoPedido);
 
         // verifica a resposta da função
         if(repostaClasse) {
