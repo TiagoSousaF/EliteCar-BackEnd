@@ -160,5 +160,51 @@ export class PedidoVenda {
             return null;
         }
     }
+/**
+     * Realiza o cadastro de um Pedido de Venda no banco de dados.
+     * 
+     * Esta função recebe um objeto do tipo `Pedido de Venda` e insere seus dados (nome, cpf e telefone)
+     * na tabela `Pedido de Venda` do banco de dados. O método retorna um valor booleano indicando se o cadastro 
+     * foi realizado com sucesso.
+     * 
+     * @param {PedidoVenda} PedidoVenda - Objeto contendo os dados do Pedido de Venda que será cadastrado. O objeto `PedidoVenda`
+     *                        deve conter os métodos `getIdCarro()`, `getIdCliente()`, `getDataPedido()`, `getValorPedido()`
+     *                        que retornam os respectivos valores do Pedido de Venda.
+     * @returns {Promise<boolean>} - Retorna `true` se o Pedido de Venda foi cadastrado com sucesso e `false` caso contrário.
+     *                               Em caso de erro durante o processo, a função trata o erro e retorna `false`.
+     * 
+     * @throws {Error} - Se ocorrer algum erro durante a execução do cadastro, uma mensagem de erro é exibida
+     *                   no console junto com os detalhes do erro.
+     */
+static async cadastroPedidoVenda(pedidoVenda: PedidoVenda): Promise<boolean> {
+    try {
+        // query para fazer insert de um Pedido de Venda no banco de dados
+        const queryInsertPedidoVenda = `INSERT INTO pedido_venda (id_carro, id_cliente, data_pedido, valor_pedido)
+                                    VALUES
+                                    ('${pedidoVenda.getIdCarro()}', 
+                                    '${pedidoVenda.getIdCliente()}', 
+                                    '${pedidoVenda.getDataPedido()}',
+                                     ${pedidoVenda.getValorPedido()} )
+                                    RETURNING id_pedido;`;
 
+        // executa a query no banco e armazena a resposta
+        const respostaBD = await database.query(queryInsertPedidoVenda);
+        // verifica se a quantidade de linhas modificadas é diferente de 0
+        if (respostaBD.rowCount != 0) {
+            console.log(`Pedido cadastrado com sucesso! ID do pedido: ${respostaBD.rows[0].id_pedido}`);
+            // true significa que o cadastro foi feito
+            return true;
+        }
+        // false significa que o cadastro NÃO foi feito.
+        return false;
+        // tratando o erro
+    } catch (error) {
+        // imprime outra mensagem junto com o erro
+        console.log('Erro ao cadastrar o pedido. Verifique os logs para mais detalhes.');
+        // imprime o erro no console
+        console.log(error);
+        // retorno um valor falso
+        return false;
+    }
+}
 }
