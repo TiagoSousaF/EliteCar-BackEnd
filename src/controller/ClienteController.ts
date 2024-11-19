@@ -96,6 +96,42 @@ static async remover(req: Request, res: Response): Promise<Response> {
         return res.status(400).json({ mensagem: "Não foi possível remover o carro. Entre em contato com o administrador do sistema." });
     }
 }
+
+static async atualizar(req: Request, res: Response): Promise<Response> {
+    try {
+        //recupera as inoformações a serem atualizadas no corpo da requisição
+        const clienteRecebido: ClienteDTO = req.body;
+        //recupera o ID do cliente a ser atualizado
+        const idClienteRecebido = parseInt(req.params.idCliente as string);
+
+        //instanciando um objeto do tipo carro
+        const clienteAtualizado = new Cliente(
+            clienteRecebido.nome,
+            clienteRecebido.cpf,
+            clienteRecebido.telefone
+        );
+
+        //adicionando o ID no objetocarroAtualizado
+        clienteAtualizado.setIdCliente(idClienteRecebido);
+
+        //chamando a função de atualizar o cliente e guardando a resposta (booleano)
+        const respostaModelo = await Cliente.atualizarCliente(clienteAtualizado);
+        
+        //verifica se a resposta é true
+        if (respostaModelo) {
+            //retorna um status 200 com uma mensagem de sucesso
+            return res.status(200).json({mensagem: "Cliente atualizado com sucesso!"})
+        } else {
+            //retorna um status 400 com uma mensagem de erro
+            return res.status(400).json({ mensagem: "Não foi possível atualizar o cliente. Entre em contato com o administrador do sistema." });
+        }
+    } catch (error) {
+        //lança uma mensagem de erro no console
+        console.log(`Erro ao atualizar um cliente. ${error}`);
+
+        return res.status(400).json({ mensagem: "Não foi possível atualizar o cliente. Entre em contato com o administrador do sistema." });
+    }        
+}
 }
 
 // Exporta a classe 'ClienteController' para que possa ser utilizada em outras partes do código

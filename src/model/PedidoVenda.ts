@@ -236,4 +236,37 @@ static async removerPedido(idPedido: number): Promise<boolean> {
         return false;   
     }
 }
+
+static async atualizarPedido(pedido: PedidoVenda): Promise<boolean> {
+    try {
+        const queryUpdatePedido = `UPDATE pedido_venda SET
+                                id_carro = ${pedido.getIdCarro()},
+                                id_cliente = ${pedido.getIdCliente()}, 
+                                data_pedido = '${pedido.getDataPedido()}',
+                                valor_pedido = ${pedido.getValorPedido()}
+                                WHERE id_pedido = ${pedido.getIdPedido()};`;
+
+        //executar a query e armazenar a resposta do banco de dados em uma variável
+        const respostaBD = await database.query(queryUpdatePedido);
+
+        //verifica se alguma linha foi alterada
+        if (respostaBD.rowCount != 0) {
+            //imprime uma mensagem de sucesso no console
+            console.log(`Pedido atualizado com sucesso! ID: ${pedido.getIdPedido()}`);
+            //retorna true, indicando que a query foi executada com sucesso
+            return true;
+        }
+
+        //retorna falso, indicando que a query não foi executada com sucesso
+        return false;
+
+    } catch (error) {
+        //exibe uma mensagem de falha
+        console.log(`Erro ao atualizar o pedido. Verifique os logs para mais detalhes.`);
+        //imprime o erro no console da API
+        console.log(error);
+        //retorna false, o que indica que a remoção não foi feita
+        return false;
+    }
+}
 }

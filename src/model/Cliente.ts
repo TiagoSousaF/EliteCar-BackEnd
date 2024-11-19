@@ -212,4 +212,36 @@ export class Cliente {
             return false;   
         }
     }
+
+    static async atualizarCliente(cliente: Cliente): Promise<boolean> {
+        try {
+            const queryUpdateCliente = `UPDATE cliente SET
+                                     nome = '${cliente.getNome()}',
+                                     cpf = '${cliente.getCpf()}',
+                                     telefone = ${cliente.getTelefone()}
+                                     WHERE id_cliente = ${cliente.getIdCliente()};`;
+    
+            //executar a query e armazenar a resposta do banco de dados em uma variável
+            const respostaBD = await database.query(queryUpdateCliente);
+    
+            //verifica se alguma linha foi alterada
+            if (respostaBD.rowCount != 0) {
+                //imprime uma mensagem de sucesso no console
+                console.log(`Cliente atualizado com sucesso! ID: ${cliente.getIdCliente()}`);
+                //retorna true, indicando que a query foi executada com sucesso
+                return true;
+            }
+    
+            //retorna falso, indicando que a query não foi executada com sucesso
+            return false;
+    
+        } catch (error) {
+            //exibe uma mensagem de falha
+            console.log(`Erro ao atualizar o cliente. Verifique os logs para mais detalhes.`);
+            //imprime o erro no console da API
+            console.log(error);
+            //retorna false, o que indica que a remoção não foi feita
+            return false;
+        }
+    }
 }

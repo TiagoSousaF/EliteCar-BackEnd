@@ -98,6 +98,42 @@ static async remover(req: Request, res: Response): Promise<Response> {
     }
 }
     
+static async atualizar(req: Request, res: Response): Promise<Response> {
+    try {
+        //recupera as inoformações a serem atualizadas no corpo da requisição
+        const pedidoRecebido: PedidoVendaDTO = req.body;
+        //recupera o ID do cliente a ser atualizado
+        const idPedidoRecebido = parseInt(req.params.idPedido as string);
+
+        //instanciando um objeto do tipo pedido
+        const pedidoAtualizado = new PedidoVenda(
+            pedidoRecebido.idCarro,
+            pedidoRecebido.idCliente,
+            pedidoRecebido.dataPedido,
+            pedidoRecebido.valorPedido
+        );
+
+        //adicionando o ID no objetocarroAtualizado
+        pedidoAtualizado.setIdPedido(idPedidoRecebido);
+
+        //chamando a função de atualizar o pedido e guardando a resposta (booleano)
+        const respostaModelo = await PedidoVenda.atualizarPedido(pedidoAtualizado);
+        
+        //verifica se a resposta é true
+        if (respostaModelo) {
+            //retorna um status 200 com uma mensagem de sucesso
+            return res.status(200).json({mensagem: "Pedido atualizado com sucesso!"})
+        } else {
+            //retorna um status 400 com uma mensagem de erro
+            return res.status(400).json({ mensagem: "Não foi possível atualizar o pedido. Entre em contato com o administrador do sistema." });
+        }
+    } catch (error) {
+        //lança uma mensagem de erro no console
+        console.log(`Erro ao atualizar um cliente. ${error}`);
+
+        return res.status(400).json({ mensagem: "Não foi possível atualizar o cliente. Entre em contato com o administrador do sistema." });
+    }        
+}
 
 }
 
