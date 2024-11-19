@@ -72,6 +72,33 @@ class PedidoVendaController extends PedidoVenda {
         return res.status(400).json({ mensagem: "Não foi possível cadastrar o Pedido de Venda. Entre em contato com o administrador do sistema." });
     }
 }
+static async remover(req: Request, res: Response): Promise<Response> {
+    try {
+        //recuperar o ID do cliente a ser removido
+        const IdPedido = parseInt(req.params.idPedido as string);
+
+        //chamar a função do modelo e armazenar a resposta
+        const respostaModelo = await PedidoVenda.removerPedido(IdPedido);
+
+        //verifica se a resposta do modelo foi verdadeiro (true)
+        if (respostaModelo) {
+            //retorna um status 200 com uma mensagem de sucesso
+            return res.status(200).json({mensagem: "O pedido foi removido com sucesso!"})    
+        } else {
+            //retorna um status 400 com uma mensagem de erro
+            return res.status(400).json({mensagem: "Erro ao remover o pedido. Entre em contato com o administrador do sistema"})
+        }
+        
+    } catch (error) {
+        //lança uma mensagem de erro no console
+        console.log(`Erro ao remover um pedido. ${error}`);
+
+        //retorna uma mensagem de erro à quem chamou a mensagem
+        return res.status(400).json({ mensagem: "Não foi possível remover o pedido. Entre em contato com o administrador do sistema." });
+    }
+}
+    
+
 }
 
 // Exporta a classe 'PedidoVendaController' para que possa ser utilizada em outras partes do código

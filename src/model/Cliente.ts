@@ -183,4 +183,33 @@ export class Cliente {
             return false;
         }
     }
+
+    static async removerCliente(idCliente: number): Promise<boolean> {
+        try {
+            //cria uma query para deletar um objeto do banco de dados, passando como parâmetro o ID
+            const queryDeleteCliente = `DELETE FROM cliente WHERE id_cliente = ${idCliente}`;
+
+            //executar a query e armazenar a resposta do banco de daodos
+            const respostaBD = await database.query(queryDeleteCliente);
+
+            //verifica se o número de linhas alteradas é diferente de 0
+            if(respostaBD.rowCount != 0) {
+                //exibe uma mensagem no console
+                console.log(`Carro removido com sucesso. ID removido: ${idCliente}`);
+                //retorna true, indicando que o carro foi removido
+                return true;
+            }
+
+            //retorna false, o que indica que o carro foi removido
+            return true;
+        //trata qualquer erro que possa acontecer no caminho
+        } catch (error) {
+            //exibe uma mensagem de falha
+            console.log(`Erro ao remover cliente. Verifique os logs para mais detalhes.`);
+            //imprime o erro no console da API
+            console.log(error);
+            //retorna false, o que indica que a remoção não foi feita 
+            return false;   
+        }
+    }
 }

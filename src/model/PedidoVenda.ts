@@ -207,4 +207,33 @@ static async cadastroPedido(pedidoVenda: PedidoVenda): Promise<boolean> {
         return false;
     }
 }
+
+static async removerPedido(idPedido: number): Promise<boolean> {
+    try {
+        //cria uma query para deletar um objeto do banco de dados, passando como parâmetro o ID
+        const queryDeletePedido = `DELETE FROM pedido_venda WHERE id_pedido = ${idPedido}`;
+
+        //executar a query e armazenar a resposta do banco de daodos
+        const respostaBD = await database.query(queryDeletePedido);
+
+        //verifica se o número de linhas alteradas é diferente de 0
+        if(respostaBD.rowCount != 0) {
+            //exibe uma mensagem no console
+            console.log(`Pedido removido com sucesso. ID removido: ${idPedido}`);
+            //retorna true, indicando que o carro foi removido
+            return true;
+        }
+
+        //retorna false, o que indica que o carro foi removido
+        return true;
+    //trata qualquer erro que possa acontecer no caminho
+    } catch (error) {
+        //exibe uma mensagem de falha
+        console.log(`Erro ao remover pedido. Verifique os logs para mais detalhes.`);
+        //imprime o erro no console da API
+        console.log(error);
+        //retorna false, o que indica que a remoção não foi feita 
+        return false;   
+    }
+}
 }
